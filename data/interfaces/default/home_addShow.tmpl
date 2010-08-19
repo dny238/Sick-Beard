@@ -17,17 +17,18 @@
   \$('#searchName').click(function(){
         \$.getJSON('$sbRoot/home/addShows/searchTVDBForShowName', {'name': \$('#nameToSearch').val()}, function(data){
             var resultStr = ''
-            
+           	var checked = ' checked'
             if (data.results.length == 0) {
                 resultStr = '<b>No results found, try a different search.</b>';
             } else {
             
                 \$.each(data.results, function(index, obj){
-                    resultStr += '<input type="radio" name="whichSeries" value="' + obj[0] + '"> '
+                    resultStr += '<input type="radio" name="whichSeries" value="' + obj[0] + '"' + checked + '> '
                     resultStr += '<a href="http://thetvdb.com/?tab=series&id=' + obj[0] + '" target="_new"><b>' + obj[1] + '</b></a>'
                     if (obj[2] != null)
                         resultStr += ' (started on ' + obj[2] + ')'
                     resultStr += '<br />'
+                    checked = ''
                 });
                 resultStr += '</ul>'
             }
