@@ -690,8 +690,8 @@ class ConfigEpisodeDownloads:
         if usenet_retention == None:
             usenet_retention = 200
             
-        sickbeard.ROOT_DIR_LABELS = [x for x in root_dirs.split('|') if x]
-        sickbeard.ROOT_DIR_PATHS = [x for x in root_labels.split('|') if x]
+        sickbeard.ROOT_DIR_LABELS = [x for x in root_labels.split('|') if x]
+        sickbeard.ROOT_DIR_PATHS = [x for x in root_dirs.split('|') if x]
         
         sickbeard.PROCESS_AUTOMATICALLY = process_automatically
         sickbeard.KEEP_PROCESSED_DIR = keep_processed_dir
