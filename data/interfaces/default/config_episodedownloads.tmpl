@@ -164,11 +164,10 @@ Directory: <input type="text" name="root_dir" id="root_dir" size="30"><br />
 <br />
 #if len($sickbeard.ROOT_DIR_LABELS) != 0:
 	<strong>Existing root locations</strong><br />
-	Check the delete box and hit save to remove, no impact to your existing content will occur
 	<table>
 		<tr><td><strong>Label</strong></td><td><strong>Directory</strong></td><td></td></tr>
 	#for index in range(len($sickbeard.ROOT_DIR_LABELS)):
-	   <tr><td>$sickbeard.ROOT_DIR_LABELS[index]</td><td>$sickbeard.ROOT_DIR_PATHS[index]</td><td><input type="checkbox" name="del_root_$index" id="del_root_$index">Delete</td></tr>
+	   <tr><td>$sickbeard.ROOT_DIR_LABELS[index]</td><td>$sickbeard.ROOT_DIR_PATHS[index]</td></tr>
 	#end for
 	</table>
 	<br />
