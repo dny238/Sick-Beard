@@ -149,6 +149,35 @@ NOTE: If you use sabToSickbeard w/ SABnzbd+ do not check this!<br />
 </fieldset>
 </div>
 
+<div class="EntryBlock">
+<fieldset class="EntryFieldSet">
+
+<legend>Easy Add Locations</legend>
+
+<strong>New root location</strong><br />
+Put the default root paths here so you don't have to type them<br />
+each time you add a new show. Only having to type the name of the <br />
+show should make easier on your girlfriend.<br /><br />
+Label: <input type="text" name="root_label" id="root_label" size="10">
+Directory: <input type="text" name="root_dir" id="root_dir" size="30"><br />
+
+<br />
+#if len($sickbeard.ROOT_DIR_LABELS) != 0:
+	<strong>Existing root locations</strong><br />
+	Check the delete box and hit save to remove, no impact to your existing content will occur
+	<table>
+		<tr><td><strong>Label</strong></td><td><strong>Directory</strong></td><td></td></tr>
+	#for index in range(len($sickbeard.ROOT_DIR_LABELS)):
+	   <tr><td>$sickbeard.ROOT_DIR_LABELS[index]</td><td>$sickbeard.ROOT_DIR_PATHS[index]</td><td><input type="checkbox" name="del_root_$index" id="del_root_$index">Delete</td></tr>
+	#end for
+	</table>
+	<br />
+#end if
+
+</fieldset>
+</div>
+
+
 
 <p>
 <input type="submit" value="Save Changes">
@@ -160,6 +189,7 @@ NOTE: If you use sabToSickbeard w/ SABnzbd+ do not check this!<br />
     jQuery('#nzb_dir').fileBrowser({ title: 'Select NZB Black Hole/Watch Directory' });
     jQuery('#torrent_dir').fileBrowser({ title: 'Select Torrent Black Hole/Watch Directory' });
     jQuery('#tv_download_dir').fileBrowser({ title: 'Select TV Download directory' });
+    jQuery('#root_dir').fileBrowser({ title: 'Select Show save directory' });
 </script>
 
 #include $os.path.join($sickbeard.PROG_DIR, "data/interfaces/default/inc_bottom.tmpl")

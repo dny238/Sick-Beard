@@ -7,6 +7,24 @@
 #import os.path
 #include $os.path.join($sickbeard.PROG_DIR, "data/interfaces/default/inc_top.tmpl")
 
+<h2>Add Show</h2>
+#if len($sickbeard.ROOT_DIR_LABELS) == 0:
+Add a 'Root Location' in the Config->Episode downloads to enable this 'Show name only' quick add feature.
+#else
+<form method="POST" action="addShows" accept-charset="utf-8">
+Location: 
+<select name="root_label">
+	#for index in range(len($sickbeard.ROOT_DIR_LABELS)):
+		
+<option value="$index" $sickbeard.ROOT_DIR_LABELS[index]>$sickbeard.ROOT_DIR_LABELS[index]
+#end for
+</select>
+<input type="text" name="easyadd_show" size="20"> <input type="submit" value="Add Show">
+</form>
+<br />
+#end if
+<br />
+
 <h2>Add Single Show</h2>
 
 <form method="POST" action="addShows" accept-charset="utf-8">

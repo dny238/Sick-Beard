@@ -152,10 +152,13 @@ XBMC_USERNAME = None
 XBMC_PASSWORD = None
 
 USE_GROWL = False
-GROWL_HOST = None
+GROWL_HOST = None	
 GROWL_PASSWORD = None
 
 EXTRA_SCRIPTS = []
+
+ROOT_DIR_LABELS = []
+ROOT_DIR_PATHS = []
 
 __INITIALIZED__ = False
 
@@ -258,7 +261,8 @@ def initialize(consoleLogging=True):
                 NAMING_SHOW_NAME, NAMING_EP_TYPE, NAMING_MULTI_EP_TYPE, CACHE_DIR, TVDB_API_PARMS, \
                 RENAME_EPISODES, properFinderScheduler, PROVIDER_ORDER, autoPostProcesserScheduler, \
                 KEEP_PROCESSED_FILE, CREATE_IMAGES, NAMING_EP_NAME, NAMING_SEP_TYPE, NAMING_USE_PERIODS, \
-                NZBSRUS, NZBSRUS_UID, NZBSRUS_HASH, BINREQ, NAMING_QUALITY, NAMING_DATES, EXTRA_SCRIPTS
+                NZBSRUS, NZBSRUS_UID, NZBSRUS_HASH, BINREQ, NAMING_QUALITY, NAMING_DATES, EXTRA_SCRIPTS, \
+                ROOT_DIR_LABELS, ROOT_DIR_PATHS
 
         
         if __INITIALIZED__:
@@ -390,8 +394,19 @@ def initialize(consoleLogging=True):
 
         EXTRA_SCRIPTS = [x for x in check_setting_str(CFG, 'General', 'extra_scripts', '').split('|') if x]
         
+        ROOT_DIR_LABELS = [x for x in check_setting_str(CFG, 'General', 'root_dir_labels', '').split('|') if x]
+        ROOT_DIR_PATHS = [x for x in check_setting_str(CFG, 'General', 'root_dir_paths', '').split('|') if x]
+        #label_list = check_setting_str(CFG, 'General', 'root_dir_labels', '').split('|')
+        #dir_list = check_setting_str(CFG, 'General', 'root_dir_paths', '').split('|')
+        #ROOT_DIRS = dict(zip(label_list, dir_list))
+
+        
         logger.initLogging(consoleLogging=consoleLogging)
 
+        logger.log("Loading dir from prefs", logger.ERROR)
+        for curScriptName in sickbeard.ROOT_DIR_PATHS:
+        	logger.log("Loaded dir from prefs " + curScriptName, logger.ERROR)
+        
         # initialize the main SB database
         db.upgradeDatabase(db.DBConnection(), mainDB.InitialSchema)
 
@@ -584,7 +599,7 @@ def save_config():
         NZBMATRIX, NZBMATRIX_USERNAME, NZBMATRIX_APIKEY, VERSION_NOTIFY, TV_DOWNLOAD_DIR, \
         PROCESS_AUTOMATICALLY, KEEP_PROCESSED_DIR, TVNZB, TVBINZ_AUTH, TVBINZ_SABUID, \
         NAMING_SHOW_NAME, NAMING_EP_TYPE, NAMING_MULTI_EP_TYPE, CACHE_DIR, RENAME_EPISODES, PROVIDER_ORDER, \
-        KEEP_PROCESSED_FILE, CREATE_IMAGES
+        KEEP_PROCESSED_FILE, CREATE_IMAGES, ROOT_DIR_LABELS, ROOT_DIR_PATHS	 
 
 
         
@@ -653,7 +668,8 @@ def save_config():
     CFG['Growl']['use_growl'] = int(USE_GROWL)
     CFG['Growl']['growl_host'] = GROWL_HOST
     CFG['Growl']['growl_password'] = GROWL_PASSWORD
-    
+    CFG['Growl']['root_dir_labels'] = "|".join(ROOT_DIR_LABELS)
+    CFG['Growl']['root_dir_paths'] = "|".join(ROOT_DIR_PATHS)
     CFG.write()
 
 

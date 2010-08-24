@@ -632,10 +632,14 @@ class ConfigEpisodeDownloads:
                        use_torrent=None, torrent_dir=None, nzb_method=None, usenet_retention=None,
                        search_frequency=None, backlog_search_frequency=None, tv_download_dir=None,
                        keep_processed_dir=None, process_automatically=None, rename_episodes=None,
-                       keep_processed_file=None):
+                       keep_processed_file=None, root_label=None, root_dir=None, del_root_0=None, 
+                       del_root_1=None, del_root_2=None, del_root_3=None, del_root_4=None, del_root_5=None):
 
         results = []
 
+        root_dirs = "|".join(sickbeard.ROOT_DIR_PATHS) + "|" + os.path.normpath(root_dir.strip())
+        root_labels = "|".join(sickbeard.ROOT_DIR_LABELS) + "|" + root_label.strip()
+        
         if not config.change_TV_DOWNLOAD_DIR(tv_download_dir):
             results += ["Unable to create directory " + os.path.normpath(tv_download_dir) + ", dir not changed."]
 
@@ -681,7 +685,10 @@ class ConfigEpisodeDownloads:
 
         if usenet_retention == None:
             usenet_retention = 200
-
+        
+        sickbeard.ROOT_DIR_PATHS = root_dirs.split("|")
+        sickbeard.ROOT_DIR_LABELS = root_labels.split("|")
+        
         sickbeard.PROCESS_AUTOMATICALLY = process_automatically
         sickbeard.KEEP_PROCESSED_DIR = keep_processed_dir
         sickbeard.KEEP_PROCESSED_FILE = keep_processed_file
@@ -1001,11 +1008,14 @@ class NewHomeAddShows:
         return self.addShows(showDirs)
 
     @cherrypy.expose
-    def addShows(self, showDirs=[]):
+    def addShows(self, showDirs=[], root_label=None, easyadd_show=None):
         
         if showDirs and type(showDirs) != list:
             showDirs = [showDirs]
-
+        
+        if easyadd_show:
+        	showDirs = [os.path.join(sickbeard.ROOT_DIR_PATHS[int(root_label)], easyadd_show)]
+        	
         # don't allow blank shows
         showDirs = [x for x in showDirs if x]
 
