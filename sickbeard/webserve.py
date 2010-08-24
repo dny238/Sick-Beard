@@ -636,9 +636,14 @@ class ConfigEpisodeDownloads:
                        del_root_1=None, del_root_2=None, del_root_3=None, del_root_4=None, del_root_5=None):
 
         results = []
-
-        root_dirs = "|".join(sickbeard.ROOT_DIR_PATHS) + "|" + os.path.normpath(root_dir.strip())
-        root_labels = "|".join(sickbeard.ROOT_DIR_LABELS) + "|" + root_label.strip()
+        
+        root_dirs = "|".join(sickbeard.ROOT_DIR_PATHS)
+        root_labels = "|".join(sickbeard.ROOT_DIR_LABELS)
+        
+        if root_dir and root_label: 
+       		root_dirs = root_dirs + "|" + os.path.normpath(root_dir.strip())
+        	root_labels = root_labels + "|" + root_label.strip()
+        end if
         
         if not config.change_TV_DOWNLOAD_DIR(tv_download_dir):
             results += ["Unable to create directory " + os.path.normpath(tv_download_dir) + ", dir not changed."]
