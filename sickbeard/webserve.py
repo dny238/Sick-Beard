@@ -30,7 +30,16 @@ import operator
 from Cheetah.Template import Template
 import cherrypy
 import cherrypy.lib
-import periscope
+
+try:
+
+	import periscope
+	periscopeImport = 1
+except ImportError:
+
+	periscopeImport = 0
+
+	
 
 from sickbeard import config
 from sickbeard import history, notifiers, processTV, search, providers
