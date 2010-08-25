@@ -30,6 +30,7 @@ import operator
 from Cheetah.Template import Template
 import cherrypy
 import cherrypy.lib
+import periscope
 
 from sickbeard import config
 from sickbeard import history, notifiers, processTV, search, providers
@@ -1543,7 +1544,33 @@ class Home:
             sickbeard.updateComingList()
 
         redirect("/home/displayShow?show=" + str(epObj.show.tvdbid))
+	
+    @cherrypy.expose
+    def subtitleEpisode(self, show=None, season=None, episode=None):
+        
+        outStr = ""
+        epObj = _getEpisode(show, season, episode)
+        
+        if isinstance(epObj, str):
+            return _genericMessage("Error", epObj)
+        
+        tempStr = "Periscoping " + epObj.prettyName(True)
+        logger.log(tempStr)
+        outStr += tempStr + "<br />\n"
+        foundSubtitle = periscope.Periscope().downloadSubtitle(epObj.location, None)
+        
+        if not foundSubtitle:
+            message = 'No subtitles were found'
+            flash.error(message,
+                        "Couldn't find a subtitle for <i>%s</i>" % epObj.prettyName(True))
+            logger.log(message)
+        
+        else:
 
+            # just use the first result for now
+            logger.log("Downloaded subtitle")
+
+        redirect("/home/displayShow?show=" + str(epObj.show.tvdbid))
 
 
 class WebInterface:
