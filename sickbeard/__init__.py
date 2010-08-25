@@ -636,7 +636,7 @@ def save_config():
     CFG['General']['keep_processed_file'] = int(KEEP_PROCESSED_FILE)
     CFG['General']['process_automatically'] = int(PROCESS_AUTOMATICALLY)
     CFG['General']['rename_episodes'] = int(RENAME_EPISODES)
-    CFG['General']['root_dir_labels'] = "|".join(ROOT_DIR_LABELS)
+    CFG['General']['root_dir_labels'] = "|".join(ROOT_DIR_LABELS) 
     CFG['General']['root_dir_paths'] = "|".join(ROOT_DIR_PATHS)
     CFG['Blackhole']['nzb_dir'] = NZB_DIR
     CFG['Blackhole']['torrent_dir'] = TORRENT_DIR

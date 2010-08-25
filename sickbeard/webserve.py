@@ -247,7 +247,7 @@ class ManageShows:
             if useQuality:
                 if lastQuality == None:
                     lastQuality = curShow.quality
-                elif lastQuality != curShow.quality:
+                elif lastQuality != curShow.quality: 
                     useQuality = True
         
         t.showList = toEdit
