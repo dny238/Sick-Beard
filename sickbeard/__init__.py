@@ -25,6 +25,15 @@ import datetime
 import socket
 import os
 
+try:
+
+	import periscope
+	periscopeImport = 1
+except ImportError:
+
+	periscopeImport = 0
+	
+
 from threading import Lock
 
 # apparently py2exe won't build these unless they're imported somewhere 

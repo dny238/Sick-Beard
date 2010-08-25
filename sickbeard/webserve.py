@@ -1566,19 +1566,25 @@ class Home:
         tempStr = "Periscoping " + epObj.prettyName(True)
         logger.log(tempStr)
         outStr += tempStr + "<br />\n"
-        foundSubtitle = periscope.Periscope().downloadSubtitle(epObj.location, None)
-        
-        if not foundSubtitle:
-            message = 'No subtitles were found'
-            flash.error(message,
-                        "Couldn't find a subtitle for <i>%s</i>" % epObj.prettyName(True))
-            logger.log(message)
-        
+        if periscopeImport == 0:
+        	message = 'No subtitles were found'
+	       	flash.error(message,
+                        "Please install the periscope module to retrieve subtitles")
         else:
-
-            # just use the first result for now
-            logger.log("Downloaded subtitle")
-
+        	foundSubtitle = periscope.Periscope().downloadSubtitle(epObj.location, None)
+			        
+	        if not foundSubtitle:
+	            message = 'No subtitles were found'
+	            flash.error(message,
+	                        "Couldn't find a subtitle for <i>%s</i>" % epObj.prettyName(True))
+	            logger.log(message)
+	        
+	        else:
+	
+	            # just use the first result for now
+	            logger.log("Downloaded subtitle")
+		
+		
         redirect("/home/displayShow?show=" + str(epObj.show.tvdbid))
 
 
