@@ -405,17 +405,9 @@ def initialize(consoleLogging=True):
         
         ROOT_DIR_LABELS = [x for x in check_setting_str(CFG, 'General', 'root_dir_labels', '').split('|') if x]
         ROOT_DIR_PATHS = [x for x in check_setting_str(CFG, 'General', 'root_dir_paths', '').split('|') if x]
-        #label_list = check_setting_str(CFG, 'General', 'root_dir_labels', '').split('|')
-        #dir_list = check_setting_str(CFG, 'General', 'root_dir_paths', '').split('|')
-        #ROOT_DIRS = dict(zip(label_list, dir_list))
-
-        
+              
         logger.initLogging(consoleLogging=consoleLogging)
 
-        logger.log("Loading dir from prefs", logger.ERROR)
-        for curScriptName in sickbeard.ROOT_DIR_PATHS:
-        	logger.log("Loaded dir from prefs " + curScriptName, logger.ERROR)
-        
         # initialize the main SB database
         db.upgradeDatabase(db.DBConnection(), mainDB.InitialSchema)
 
