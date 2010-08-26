@@ -38,7 +38,6 @@ try:
 except ImportError:
 
 	periscopeImport = 0
-
 	
 
 from sickbeard import config
@@ -440,7 +439,7 @@ class ConfigGeneral:
                     launch_browser=None, create_metadata=None, web_username=None,
                     web_password=None, season_folders_default=None,
                     version_notify=None, naming_show_name=None, naming_ep_type=None,
-                    naming_multi_ep_type=None, create_images=None, naming_ep_name=None,
+                    naming_multi_ep_type=None, create_images=None, download_subs=None, naming_ep_name=None,
                     naming_use_periods=None, naming_sep_type=None, naming_quality=None,
                     anyQualities = [], bestQualities = [], naming_dates=None):
 
@@ -465,6 +464,11 @@ class ConfigGeneral:
             create_images = 1
         else:
             create_images = 0
+        
+        if download_subs == "on":
+            download_subs = 1
+        else:
+            download_subs = 0
             
         if season_folders_default == "on":
             season_folders_default = 1
@@ -515,6 +519,7 @@ class ConfigGeneral:
         sickbeard.LAUNCH_BROWSER = launch_browser
         sickbeard.CREATE_METADATA = create_metadata
         sickbeard.CREATE_IMAGES = create_images
+        sickbeard.DOWNLOAD_SUBS = download_subs
         sickbeard.SEASON_FOLDERS_DEFAULT = int(season_folders_default)
         sickbeard.QUALITY_DEFAULT = newQuality
 

@@ -39,7 +39,14 @@ class AddTvrName (AddTvrId):
 	def execute(self):
 		self.addColumn("tv_shows", "tvr_name", "TEXT", "")
 
-class AddAirdateIndex (AddTvrName):
+class AddHasSrt (AddTvrName):
+	def test(self):
+		return self.hasColumn("tv_episodes", "hassrt")
+
+	def execute(self):
+		self.addColumn("tv_episodes", "hassrt", "NUMERIC", "")
+
+class AddAirdateIndex (AddHasSrt):
 	def test(self):
 		return self.hasTable("idx_tv_episodes_showid_airdate")
 
