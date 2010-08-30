@@ -1273,7 +1273,7 @@ class TVEpisode:
 				shouldSave = True
 				
 		if sickbeard.DOWNLOAD_SUBS or force:
-			result = self.createSub(epsToWrite, force)
+			result = self.createSub(force)
 			if result == None:
 				shouldSave = True
 		
@@ -1448,44 +1448,20 @@ class TVEpisode:
 
 		return shouldSave
 
-	def createSub(self, epsToWrite, force=False):
+	def createSub(self, force=False):
 	
 		shouldSave = False
-		
-		try:
-			t = tvdb_api.Tvdb(actors=True, **sickbeard.TVDB_API_PARMS)
-			myShow = t[self.show.tvdbid]
-		except tvdb_exceptions.tvdb_shownotfound, e:
-			raise exceptions.ShowNotFoundException(str(e))
-		except tvdb_exceptions.tvdb_error, e:
-			logger.log("Unable to connect to TVDB while creating meta files - skipping - "+str(e), logger.ERROR)
-			return
-			
-		subFilename = None
-		
-		# write an SRT containing info for all matching episodes
-		for curEpToWrite in epsToWrite:
-			
-			try:
-				myEp = myShow[curEpToWrite.season][curEpToWrite.episode]
-			except (tvdb_exceptions.tvdb_episodenotfound, tvdb_exceptions.tvdb_seasonnotfound):
-				logger.log("Unable to find episode " + str(curEpToWrite.season) + "x" + str(curEpToWrite.episode) + " on tvdb... has it been removed? Should I delete from db?")
-
-			if curEpToWrite == self:
-				subFilename = myEp["filename"]
-		   
-		if not self.hassrt or force:
-			logger.log("hassrt " + self.location)
-				
-			if self.location != None and periscopeImport == 1:
-				logger.log("episode " + self.location)
-				if ek.ek(os.path.isfile, self.location):
-					logger.log("show or episode " + self.location)
-					foundSubtitle = periscope.Periscope().downloadSubtitle(self.location, None)
 					
-					if not foundSubtitle:
-						logger.log("Unable to download subtitle from "+self.location, logger.ERROR)
-						return None
+		if not self.hassrt or force:
+			if force or datetime.date.today() - self.airdate <= datetime.timedelta(days=7):
+				if self.location != None and periscopeImport == 1:
+					if ek.ek(os.path.isfile, self.location):				
+						logger.log('Writing srt for ' + self.location)
+						foundSubtitle = periscope.Periscope().downloadSubtitle(self.location, None)
+						
+						if not foundSubtitle:
+							logger.log("Unable to download subtitle from "+self.location, logger.ERROR)
+							return None
 					
 					#TODO: check that it worked
 					self.hassrt = True

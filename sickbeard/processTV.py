@@ -182,7 +182,7 @@ def processDir (dirName, nzbName=None, recurse=False):
         curFile = ek.ek(os.path.join, dirName, curFile)
         
         # if there's only one video file in the dir we can use the dirname to process too
-        if len(videoFiles) == 1:
+        if len(videoFiles) == 1:	
             returnStr += logHelper("Auto processing file: "+curFile+" ("+dirName+")")
             result = processFile(curFile, dirName, nzbName)
 
@@ -227,7 +227,9 @@ def processFile(fileName, downloadDir=None, nzbName=None):
     folderName = None
     if downloadDir != None:
         folderName = downloadDir.split(os.path.sep)[-1]
-    
+        
+    logger.log("DEBUG: Processing file "+fileName+" (with folder name "+str(folderName)+" and NZB name "+str(nzbName)+")")
+
     returnStr += logHelper("Processing file "+fileName+" (with folder name "+str(folderName)+" and NZB name "+str(nzbName)+")", logger.DEBUG)
 
     finalNameList = []
@@ -235,7 +237,7 @@ def processFile(fileName, downloadDir=None, nzbName=None):
     for curName in (fileName, folderName, nzbName):
         if curName != None:
             for curSceneName in sceneHelpers.sceneToNormalShowNames(curName):
-                if curSceneName not in finalNameList:
+            	if curSceneName not in finalNameList:
                     finalNameList.append(curSceneName)
 
     showResults = None
@@ -526,7 +528,7 @@ def processFile(fileName, downloadDir=None, nzbName=None):
     # update the statuses before we rename so the quality goes into the name properly
     for curEp in [rootEp] + rootEp.relatedEps:
         with curEp.lock:
-            curEp.location = newFile
+            #curEp.location = newFile
             
             curEp.status = Quality.compositeStatus(DOWNLOADED, newQuality)
             
@@ -543,15 +545,15 @@ def processFile(fileName, downloadDir=None, nzbName=None):
     else:
         returnStr += logHelper("Renaming is disabled, leaving file as "+curFile, logger.DEBUG)
         newFile = curFile
-
+	curEp.location = newFile
+            
     # log it to history
     history.logDownload(rootEp, fileName)
 
     notifiers.notify(NOTIFY_DOWNLOAD, rootEp.prettyName(True))
-
     
-    # generate nfo/tbn
-    rootEp.createMetaFiles()
+    # generate nfo/tbn with force on
+    rootEp.createMetaFiles(True)
     rootEp.saveToDB()
 
     # try updating just show path first
